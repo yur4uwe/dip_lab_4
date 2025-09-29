@@ -12,6 +12,8 @@ def do_this_command(message):
     message = message.lower() 
     if "hello" in message: 
         say_message("hey buddy") 
+    elif "how are you" in message: 
+        say_message("i am fine")
     elif "so long" in message: 
         say_message("while a friend") 
         exit() 

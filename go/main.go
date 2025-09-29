@@ -11,6 +11,7 @@ import (
 	"github.com/faiface/beep/mp3"
 	"github.com/faiface/beep/speaker"
 	htgotts "github.com/hegedustibor/htgo-tts"
+	"github.com/hegedustibor/htgo-tts/voices"
 )
 
 func listenCommand() string {
@@ -28,7 +29,7 @@ func doThisCommand(message string) bool {
 		sayMessage("while a friend")
 		return false
 	} else {
-		sayMessage("command not recognized")
+		sayMessage(message)
 	}
 	return true
 }
@@ -36,7 +37,6 @@ func doThisCommand(message string) bool {
 func sayMessage(message string) {
 	fmt.Println("Voice assistant:", message)
 
-	// Ensure the audio folder exists
 	if err := os.MkdirAll("audio", os.ModePerm); err != nil {
 		fmt.Println("Error creating audio folder:", err)
 		return
@@ -44,14 +44,13 @@ func sayMessage(message string) {
 
 	msg_file_name := strings.ReplaceAll(message, " ", "_")
 
-	speech := htgotts.Speech{Folder: "audio", Language: "en"}
+	speech := htgotts.Speech{Folder: "audio", Language: voices.Ukrainian}
 	file_path, err := speech.CreateSpeechFile(message, msg_file_name)
 	if err != nil {
 		fmt.Println("Error generating speech file:", err)
 		return
 	}
 
-	// Find the generated mp3 file
 	f, err := os.Open(file_path)
 	if err != nil {
 		fmt.Println("Error opening audio file:", err)
